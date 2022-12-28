@@ -1,5 +1,5 @@
 import style from './Card.module.scss'
-import {useEffect, useRef} from "react";
+import { useEffect, useRef} from "react";
 import {useGameContext} from "../../../GameContext/GameContext";
 
 interface CardProps {
@@ -8,7 +8,7 @@ interface CardProps {
 
 export const Card = ({color}: CardProps) => {
   const cardRef = useRef<HTMLButtonElement>(null)
-  const {setSelectedCards, selectedCards, removedCards, setCardsDOM, setMoves} = useGameContext()
+  const {selectedCards, removedCards, setCardsDOM,  onSelectCard} = useGameContext()
 
 
   useEffect(() => {
@@ -16,19 +16,12 @@ export const Card = ({color}: CardProps) => {
     return () => setCardsDOM([])
   }, [])
 
-  const handleClick = () => {
-    if(selectedCards.length < 2){
-      setMoves(prev => prev - 1)
-      setSelectedCards(prev => [...prev, cardRef.current!])
-    }
-  }
-
   return (
     <button
       ref={cardRef}
       disabled={selectedCards.length >= 2 || removedCards.includes(cardRef.current!) || selectedCards.includes(cardRef.current!)}
       data-color={color}
-      onClick={handleClick}
+      onClick={onSelectCard}
       className={style.Card}
     >
       <div className={style.inner}>

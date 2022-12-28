@@ -1,4 +1,13 @@
-import {createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useEffect, useState} from "react";
+import {
+  createContext,
+  Dispatch,
+  PropsWithChildren,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+  MouseEvent
+} from "react";
 import {Card, GameHistory, GameStateEnum} from "../types";
 import {createCardList, shuffleCards} from "../functions/cards";
 import {getLocalStorage, setLocalStorage} from "../functions/localStorage";
@@ -15,6 +24,7 @@ interface GameContextProps {
   setCardsDOM: Dispatch<SetStateAction<HTMLButtonElement[]>>
   gameHistory: GameHistory
   setGameHistory: Dispatch<SetStateAction<GameHistory>>
+  onSelectCard: (e: MouseEvent) => void
 }
 
 export const GameContext = createContext({} as GameContextProps)
@@ -38,8 +48,8 @@ export const GameProvider = ({children}: PropsWithChildren) => {
         setCards(cards)
         setMoves(cards?.length * 3)
         break
-      case GameStateEnum.GAME_OVER || GameStateEnum.WIN:
-        setGameHistory(prev => ({...prev, victories: prev.defeats + 1}))
+      case GameStateEnum.GAME_OVER:
+        setGameHistory(prev => ({...prev, defeats: prev.defeats + 1}))
         setLocalStorage('gameHistory', {...localStorageHistory, defeats: localStorageHistory.defeats + 1})
         resetGame()
         break
@@ -59,6 +69,14 @@ export const GameProvider = ({children}: PropsWithChildren) => {
     setMoves(0)
   }
 
+  const onSelectCard = (e: MouseEvent) => {
+    const target = e.currentTarget as HTMLButtonElement
+    if(selectedCards.length < 2){
+      setMoves(prev => prev - 1)
+      setSelectedCards(prev => [...prev, target])
+    }
+  }
+
   useEffect(() => {
     selectedCards[0] && (selectedCards[0].querySelector('div')!.style.transform = 'rotateY(180deg)')
     selectedCards[1] && (selectedCards[1].querySelector('div')!.style.transform = 'rotateY(180deg)')
@@ -75,19 +93,15 @@ export const GameProvider = ({children}: PropsWithChildren) => {
   }, [selectedCards])
 
   useEffect(() => {
-    if(gameState === GameStateEnum.PLAY && moves === 0){
-      setGameState(GameStateEnum.GAME_OVER)
-    }
+    if(gameState === GameStateEnum.PLAY && moves === 0) setGameState(GameStateEnum.GAME_OVER)
   }, [moves])
 
   useEffect(() => {
-    if(gameState === GameStateEnum.PLAY && removedCards.length === cards.length){
-      setGameState(GameStateEnum.WIN)
-    }
+    if(gameState === GameStateEnum.PLAY && removedCards.length === cards.length) setGameState(GameStateEnum.WIN)
   }, [removedCards])
 
   return (
-    <GameContext.Provider value={{gameState, setGameState, cards, setSelectedCards, moves, setMoves, selectedCards, removedCards, setCardsDOM, gameHistory, setGameHistory }}>
+    <GameContext.Provider value={{onSelectCard, gameState, setGameState, cards, setSelectedCards, moves, setMoves, selectedCards, removedCards, setCardsDOM, gameHistory, setGameHistory }}>
       {children}
     </GameContext.Provider>
   )
