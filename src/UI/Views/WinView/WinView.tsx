@@ -14,7 +14,7 @@ export const WinView = ({}: WinProps) => {
     <div className={style.Win}>
       <Title text={'Congrats ! You won that game !'}/>
       <div className={style.buttons_container}>
-        <Button text={'Play again'} onClick={()=>setGameState(GameStateEnum.PLAYING)}/>
+        <Button text={'Play again'} onClick={()=>setGameState(GameStateEnum.PLAY)}/>
         <Button text={'Lobby'} onClick={()=>setGameState(GameStateEnum.LOBBY)}/>
       </div>
     </div>

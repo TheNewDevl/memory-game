@@ -14,7 +14,7 @@ export const LobbyView = ({}: LobbyProps) => {
     <div className={style.Lobby}>
       <Title text={'Memory Game'} />
       <p>Victories : <span className={style.victories}></span></p>
-      <Button text={'Jouer'} onClick={()=>setGameState(GameStateEnum.PLAYING)}/>
+      <Button text={'Jouer'} onClick={()=>setGameState(GameStateEnum.PLAY)}/>
     </div>
   );
 };

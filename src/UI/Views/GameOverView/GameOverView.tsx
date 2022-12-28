@@ -13,7 +13,7 @@ export const GameOverView = ({}: GameOverViewProps) => {
     <div className={style.GameOverView}>
       <Title text={'GAME OVER'}/>
       <div className={style.buttons_container}>
-        <Button text={'Play again'} onClick={() => setGameState(GameStateEnum.PLAYING)} />
+        <Button text={'Play again'} onClick={() => setGameState(GameStateEnum.PLAY)} />
         <Button text={'Lobby'} onClick={() => setGameState(GameStateEnum.LOBBY)} />
       </div>
     </div>

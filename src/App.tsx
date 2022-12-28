@@ -11,7 +11,7 @@ function App() {
   return (
     <main className="Game">
       {gameState === GameStateEnum.LOBBY && <LobbyView/>}
-      {gameState === GameStateEnum.PLAYING && <GameBoardView/>}
+      {gameState === GameStateEnum.PLAY && <GameBoardView/>}
       {gameState === GameStateEnum.GAME_OVER && <GameOverView/>}
       {gameState === GameStateEnum.WIN && <WinView/>}
     </main>
