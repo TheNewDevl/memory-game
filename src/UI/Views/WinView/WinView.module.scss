@@ -1,0 +1,16 @@
+.Win {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+  justify-content: center;
+
+  & .buttons_container{
+    display: flex;
+    gap: 1em;
+  }
+}
+
+/** Created by carlos on 28/12/2022 */

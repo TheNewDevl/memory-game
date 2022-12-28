@@ -15,10 +15,27 @@
   -webkit-text-size-adjust: 100%;
 }
 
-body {
-  margin: 0;
+*{
+  box-sizing: border-box;
   padding: 0;
+  margin: 0;
 }
 
+#root{
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.Game {
+  border-radius: 10px;
+  border: 2px solid #fff;
+  width: calc(100% - 20px);
+  max-width: 1280px;
+  max-height: 768px;
+  height: calc(100vh - 20px);
+  background-color: #5d5d5d;
+}
 
