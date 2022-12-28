@@ -2,6 +2,14 @@
   padding: 10px 20px;
   text-transform: uppercase;
   font-weight: bold;
+  background-color: #49aceb;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  border-radius: 10px;
+  &:hover {
+    background-color: #49ACEB33;
+  }
 }
 
 /** Created by carlos on 28/12/2022 */

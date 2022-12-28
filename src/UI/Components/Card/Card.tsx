@@ -1,23 +1,37 @@
 import style from './Card.module.scss'
-import {useEffect, useState} from "react";
+import {useEffect, useRef} from "react";
+import {useGameContext} from "../../../GameContext/GameContext";
 
 interface CardProps {
-  id: number
-  color: string
+  color: string,
 }
 
-export const Card = ({id, color}: CardProps) => {
-  const [isFlipped, setIsFlipped] = useState(false)
+export const Card = ({color}: CardProps) => {
+  const cardRef = useRef<HTMLButtonElement>(null)
+  const {setSelectedCards, selectedCards, removedCards, setCardsDOM, setMoves} = useGameContext()
+
 
   useEffect(() => {
-    if(isFlipped) {
-      setTimeout(() => setIsFlipped(false), 1000)
+    setCardsDOM(prev => [...prev, cardRef.current!])
+    return () => setCardsDOM([])
+  }, [])
+
+  const handleClick = () => {
+    if(selectedCards.length < 2){
+      setMoves(prev => prev - 1)
+      setSelectedCards(prev => [...prev, cardRef.current!])
     }
-  }, [isFlipped])
+  }
 
   return (
-    <button onClick={() => setIsFlipped(!isFlipped)}  className={style.Card}>
-      <div style={{transform : isFlipped ? 'rotateY(180deg)' : "unset"}} className={style.inner}>
+    <button
+      ref={cardRef}
+      disabled={selectedCards.length >= 2 || removedCards.includes(cardRef.current!) || selectedCards.includes(cardRef.current!)}
+      data-color={color}
+      onClick={handleClick}
+      className={style.Card}
+    >
+      <div className={style.inner}>
         <div className={style.back}></div>
         <div style={{backgroundColor: color}} className={style.front}></div>
       </div>

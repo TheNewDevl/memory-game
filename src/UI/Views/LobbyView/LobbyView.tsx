@@ -9,11 +9,14 @@ interface LobbyProps {
 }
 
 export const LobbyView = ({}: LobbyProps) => {
-  const {setGameState} = useGameContext()
+  const {setGameState, gameHistory} = useGameContext()
   return (
     <div className={style.Lobby}>
       <Title text={'Memory Game'} />
-      <p>Victories : <span className={style.victories}></span></p>
+      <div>
+        <p>Victories : <span className={style.victories}>{gameHistory?.victories && gameHistory?.victories}</span></p>
+        <p>Defeats : <span className={style.victories}>{gameHistory?.defeats && gameHistory?.defeats}</span></p>
+      </div>
       <Button text={'Jouer'} onClick={()=>setGameState(GameStateEnum.PLAY)}/>
     </div>
   );

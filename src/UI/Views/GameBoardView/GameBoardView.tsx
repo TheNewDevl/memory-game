@@ -8,15 +8,16 @@ interface GameBoardProps {
 }
 
 export const GameBoardView = ({}: GameBoardProps) => {
-  const {setGameState, cards} = useGameContext()
+  const {setGameState, cards, moves} = useGameContext()
 
   return (
     <div className={style.GameBoard}>
       <div className={style.card_container}>
-        {cards && cards.map(({color, id}, i) => <Card key={id} id={id} color={color}/>)}
+        {cards && cards.map(({color, id}) => <Card key={id} color={color}/>)}
       </div>
       <div className={style.controls}>
-        <Button text={'Lobby'} onClick={() => setGameState(GameStateEnum.LOBBY)}/>
+        <p>Available moves: <span className={style.moves}>{moves && moves}</span></p>
+        <Button text={'End game'} onClick={() => setGameState(GameStateEnum.GAME_OVER)}/>
       </div>
     </div>
   );

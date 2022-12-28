@@ -34,6 +34,10 @@
     color: white;
     transform: rotateY(180deg);
   }
+
+  &[disabled] {
+    cursor: unset;
+  }
 }
 
 /** Created by carlos on 28/12/2022 */
