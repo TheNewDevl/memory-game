@@ -1,6 +1,7 @@
 import {createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useEffect, useState} from "react";
-import {Card, GameStateEnum} from "../types";
+import {Card, GameHistory, GameStateEnum} from "../types";
 import {createCardList, shuffleCards} from "../functions/cards";
+import {getLocalStorage, setLocalStorage} from "../functions/localStorage";
 
 interface GameContextProps {
   gameState: GameStateEnum
@@ -12,8 +13,8 @@ interface GameContextProps {
   selectedCards: HTMLButtonElement[]
   removedCards: HTMLButtonElement[]
   setCardsDOM: Dispatch<SetStateAction<HTMLButtonElement[]>>
-  gameHistory: { victories: number, defeats: number }
-  setGameHistory: Dispatch<SetStateAction<{ victories: number, defeats: number }>>
+  gameHistory: GameHistory
+  setGameHistory: Dispatch<SetStateAction<GameHistory>>
 }
 
 export const GameContext = createContext({} as GameContextProps)
@@ -29,6 +30,7 @@ export const GameProvider = ({children}: PropsWithChildren) => {
 
 
   useEffect(() => {
+    const localStorageHistory = getLocalStorage('gameHistory')
     switch (gameState) {
       case GameStateEnum.PLAY:
         const cards = createCardList(4)
@@ -37,6 +39,13 @@ export const GameProvider = ({children}: PropsWithChildren) => {
         setMoves(cards?.length * 3)
         break
       case GameStateEnum.GAME_OVER || GameStateEnum.WIN:
+        setGameHistory(prev => ({...prev, victories: prev.defeats + 1}))
+        setLocalStorage('gameHistory', {...localStorageHistory, defeats: localStorageHistory.defeats + 1})
+        resetGame()
+        break
+      case GameStateEnum.WIN:
+        setGameHistory(prev => ({...prev, victories: prev.victories + 1}))
+        setLocalStorage('gameHistory', {...localStorageHistory, victories: localStorageHistory.victories + 1})
         resetGame()
         break
     }
@@ -68,14 +77,12 @@ export const GameProvider = ({children}: PropsWithChildren) => {
   useEffect(() => {
     if(gameState === GameStateEnum.PLAY && moves === 0){
       setGameState(GameStateEnum.GAME_OVER)
-      setGameHistory(prev => ({...prev, victories: prev.defeats + 1}))
     }
   }, [moves])
 
   useEffect(() => {
     if(gameState === GameStateEnum.PLAY && removedCards.length === cards.length){
       setGameState(GameStateEnum.WIN)
-      setGameHistory(prev => ({...prev, victories: prev.victories + 1}))
     }
   }, [removedCards])
 

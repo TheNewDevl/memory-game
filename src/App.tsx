@@ -4,9 +4,14 @@ import {GameStateEnum} from "./types";
 import {GameBoardView} from "./UI/Views/GameBoardView/GameBoardView";
 import {GameOverView} from "./UI/Views/GameOverView/GameOverView";
 import {WinView} from "./UI/Views/WinView/WinView";
+import {useEffect} from "react";
+import {getLocalStorage} from "./functions/localStorage";
 
 function App() {
-  const {gameState} = useGameContext();
+  const {gameState, setGameHistory} = useGameContext();
+
+  // Get game history from local storage and set it to the context
+  useEffect(() => setGameHistory(getLocalStorage('gameHistory')), []);
 
   return (
     <main className="Game">

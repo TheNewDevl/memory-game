@@ -9,3 +9,8 @@ export interface Card {
   color: string;
   id: number;
 }
+
+export interface GameHistory {
+  victories: number;
+  defeats: number;
+}
