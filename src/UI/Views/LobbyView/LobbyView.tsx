@@ -21,12 +21,15 @@ export const LobbyView = ({}: LobbyProps) => {
   return (
     <div className={style.Lobby}>
       <Title text={'Memory Game'} />
-      <div>
-        <p>Victories : <span className={style.victories}>{gameHistory?.victories && gameHistory?.victories}</span></p>
-        <p>Defeats : <span className={style.victories}>{gameHistory?.defeats && gameHistory?.defeats}</span></p>
+      <div className={style.buttons_container}>
+        <p>Victories : <span className={style.history}>{gameHistory?.victories && gameHistory?.victories}</span></p>
+        <p>Defeats : <span className={style.history}>{gameHistory?.defeats && gameHistory?.defeats}</span></p>
       </div>
+      <div className={style.buttons_container}>
+
       <Button text={'Jouer'} onClick={()=>setGameState(GameStateEnum.PLAY)}/>
       <Button text={'Reset Stats'} onClick={resetGameHistory}/>
+      </div>
     </div>
   );
 };

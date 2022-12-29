@@ -6,6 +6,15 @@
   gap: 1em;
   align-items: center;
   justify-content: center;
+
+  & .history{
+    font-weight: 900;
+    color: #49aceb;
+  }
+  & .buttons_container{
+    display: flex;
+    gap: 1em;
+  }
 }
 
 /** Created by carlos on 28/12/2022 */

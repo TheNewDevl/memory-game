@@ -5,8 +5,10 @@
   background-color: #49aceb;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, color 0.3s;
   border-radius: 10px;
+  color: #fff;
+
   &:hover {
     background-color: #49ACEB33;
   }
