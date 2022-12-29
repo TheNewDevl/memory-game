@@ -8,12 +8,13 @@ interface CardProps {
 
 export const Card = ({color}: CardProps) => {
   const cardRef = useRef<HTMLButtonElement>(null)
-  const {selectedCards, removedCards, setCardsDOM,  onSelectCard} = useGameContext()
-
+  const {gameState, setGameActions} = useGameContext()
+  const {onSelectCard, setCardsDOM, resetCardsDom} = setGameActions()
+  const {selectedCards, removedCards} = gameState
 
   useEffect(() => {
-    setCardsDOM(prev => [...prev, cardRef.current!])
-    return () => setCardsDOM([])
+    setCardsDOM(cardRef.current!)
+    return () => resetCardsDom()
   }, [])
 
   return (

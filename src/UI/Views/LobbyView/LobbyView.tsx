@@ -10,7 +10,8 @@ interface LobbyProps {
 }
 
 export const LobbyView = ({}: LobbyProps) => {
-  const {setGameState, gameHistory, setGameHistory} = useGameContext()
+  const {gameState, setGameActions} = useGameContext()
+  const {setGameHistory, setPlayingState} = setGameActions()
 
   const resetGameHistory = () => {
     const gameHistory = {victories: 0, defeats: 0}
@@ -22,13 +23,13 @@ export const LobbyView = ({}: LobbyProps) => {
     <div className={style.Lobby}>
       <Title text={'Memory Game'} />
       <div className={style.buttons_container}>
-        <p>Victories : <span className={style.history}>{gameHistory?.victories && gameHistory?.victories}</span></p>
-        <p>Defeats : <span className={style.history}>{gameHistory?.defeats && gameHistory?.defeats}</span></p>
+        <p>Victories : <span className={style.history}>{gameState?.gameHistory?.victories && gameState?.gameHistory?.victories}</span></p>
+        <p>Defeats : <span className={style.history}>{gameState?.gameHistory?.defeats && gameState?.gameHistory?.defeats}</span></p>
       </div>
-      <div className={style.buttons_container}>
 
-      <Button text={'Jouer'} onClick={()=>setGameState(GameStateEnum.PLAY)}/>
-      <Button text={'Reset Stats'} onClick={resetGameHistory}/>
+      <div className={style.buttons_container}>
+        <Button text={'Jouer'} onClick={()=>setPlayingState(GameStateEnum.PLAY)}/>
+        <Button text={'Reset Stats'} onClick={resetGameHistory}/>
       </div>
     </div>
   );

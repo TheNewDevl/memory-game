@@ -8,17 +8,17 @@ import {useEffect} from "react";
 import {getLocalStorage} from "./functions/localStorage";
 
 function App() {
-  const {gameState, setGameHistory} = useGameContext();
-
+  const {gameState, setGameActions} = useGameContext();
+  const {setGameHistory} = setGameActions();
   // Get game history from local storage and set it to the context
   useEffect(() => setGameHistory(getLocalStorage('gameHistory')), []);
 
   return (
     <main className="Game">
-      {gameState === GameStateEnum.LOBBY && <LobbyView/>}
-      {gameState === GameStateEnum.PLAY && <GameBoardView/>}
-      {gameState === GameStateEnum.GAME_OVER && <GameOverView/>}
-      {gameState === GameStateEnum.WIN && <WinView/>}
+      {gameState.state === GameStateEnum.LOBBY && <LobbyView/>}
+      {gameState.state === GameStateEnum.PLAY && <GameBoardView/>}
+      {gameState.state === GameStateEnum.GAME_OVER && <GameOverView/>}
+      {gameState.state === GameStateEnum.WIN && <WinView/>}
     </main>
   )
 }

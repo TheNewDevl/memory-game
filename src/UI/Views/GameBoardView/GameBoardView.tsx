@@ -8,7 +8,9 @@ interface GameBoardProps {
 }
 
 export const GameBoardView = ({}: GameBoardProps) => {
-  const {setGameState, cards, moves} = useGameContext()
+  const {gameState, setGameActions} = useGameContext()
+  const {moves, cards} = gameState
+  const {setPlayingState} = setGameActions()
 
   return (
     <div className={style.GameBoard}>
@@ -17,7 +19,7 @@ export const GameBoardView = ({}: GameBoardProps) => {
       </div>
       <div className={style.controls}>
         <p>Available moves: <span className={style.moves}>{moves && moves}</span></p>
-        <Button text={'End game'} onClick={() => setGameState(GameStateEnum.GAME_OVER)}/>
+        <Button text={'End game'} onClick={() => setPlayingState(GameStateEnum.GAME_OVER)}/>
       </div>
     </div>
   );

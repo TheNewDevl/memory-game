@@ -8,14 +8,15 @@ interface WinProps {
 }
 
 export const WinView = ({}: WinProps) => {
-  const {setGameState} = useGameContext()
+  const {setGameActions} = useGameContext()
+  const {setPlayingState} = setGameActions()
 
   return (
     <div className={style.Win}>
       <Title text={'Congrats ! You won that game !'}/>
       <div className={style.buttons_container}>
-        <Button text={'Play again'} onClick={()=>setGameState(GameStateEnum.PLAY)}/>
-        <Button text={'Lobby'} onClick={()=>setGameState(GameStateEnum.LOBBY)}/>
+        <Button text={'Play again'} onClick={()=>setPlayingState(GameStateEnum.PLAY)}/>
+        <Button text={'Lobby'} onClick={()=>setPlayingState(GameStateEnum.LOBBY)}/>
       </div>
     </div>
   );
