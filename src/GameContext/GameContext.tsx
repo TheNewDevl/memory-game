@@ -25,7 +25,7 @@ const initialState: GameState = {
   selectedCards: [],
   removedCards: [],
   gameHistory: {victories: 0, defeats: 0},
-  numberOfCards:30,
+  numberOfCards:12,
   difficulty: DifficultyEnum.EASY
 }
 

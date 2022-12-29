@@ -6,6 +6,8 @@ import {GameOverView} from "./UI/Views/GameOverView/GameOverView";
 import {WinView} from "./UI/Views/WinView/WinView";
 import {useEffect} from "react";
 import {getLocalStorage} from "./functions/localStorage";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {E404} from "./UI/Views/E404/E404";
 
 function App() {
   const {gameState, setGameActions} = useGameContext();
@@ -14,12 +16,18 @@ function App() {
   useEffect(() => setGameHistory(getLocalStorage('gameHistory')), []);
 
   return (
-    <main className="Game">
-      {gameState.state === GameStateEnum.LOBBY && <LobbyView/>}
-      {gameState.state === GameStateEnum.PLAY && <GameBoardView/>}
-      {gameState.state === GameStateEnum.GAME_OVER && <GameOverView/>}
-      {gameState.state === GameStateEnum.WIN && <WinView/>}
-    </main>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<main className="Game">
+          {gameState.state === GameStateEnum.LOBBY && <LobbyView/>}
+          {gameState.state === GameStateEnum.PLAY && <GameBoardView/>}
+          {gameState.state === GameStateEnum.GAME_OVER && <GameOverView/>}
+          {gameState.state === GameStateEnum.WIN && <WinView/>}
+        </main>}/>
+        <Route path='*' element={<E404/>}/>
+      </Routes>
+
+    </BrowserRouter>
   )
 }
 
