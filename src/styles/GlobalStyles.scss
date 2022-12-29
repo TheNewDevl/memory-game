@@ -23,6 +23,7 @@
 
 #root{
   min-height: 100vh;
+  min-height: 100dvh;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -36,6 +37,6 @@
   max-width: 1280px;
   max-height: 768px;
   height: calc(100vh - 20px);
+  height: calc(100dvh - 20px);
   background-color: #5d5d5d;
 }
-
