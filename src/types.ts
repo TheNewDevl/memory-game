@@ -7,6 +7,12 @@ export enum GameStateEnum {
   WIN = 'WIN',
 }
 
+export enum DifficultyEnum {
+  EASY = 'EASY',
+  MEDIUM = 'MEDIUM',
+  HARD= 'HARD',
+}
+
 export interface Card {
   color: string;
   id: number;
@@ -26,6 +32,7 @@ export interface GameState {
   removedCards:HTMLButtonElement[],
   gameHistory: GameHistory,
   numberOfCards: number,
+  difficulty: DifficultyEnum,
 }
 
 export interface GameStateActions {
@@ -40,4 +47,6 @@ export interface GameStateActions {
   resetCardsDom: () => void,
   setMoves: (moves: number) => void
   setNumberOfCards: (numberOfCards: number) => void
+  setGameDifficulty: (difficulty: DifficultyEnum) => void
 }
+

@@ -6,7 +6,7 @@ import {
   useState,
   MouseEvent
 } from "react";
-import {Card, GameHistory, GameState, GameStateActions, GameStateEnum} from "../types";
+import {Card, DifficultyEnum, GameHistory, GameState, GameStateActions, GameStateEnum} from "../types";
 import {createCardList, shuffleCards} from "../functions/cards";
 import {setLocalStorage} from "../functions/localStorage";
 import {flipSelectedCards, hideWinningCards, unFlipSelectedCards} from "../functions/classes";
@@ -25,7 +25,8 @@ const initialState: GameState = {
   selectedCards: [],
   removedCards: [],
   gameHistory: {victories: 0, defeats: 0},
-  numberOfCards:30
+  numberOfCards:30,
+  difficulty: DifficultyEnum.EASY
 }
 
 export const GameProvider = ({children}: PropsWithChildren) => {
@@ -51,8 +52,9 @@ export const GameProvider = ({children}: PropsWithChildren) => {
     }
   }
   const setNumberOfCards = (numberOfCards: number) => setGameState(prev => ({...prev, numberOfCards}))
+  const setGameDifficulty = (difficulty: DifficultyEnum) => setGameState(prev => ({...prev, difficulty}))
   // Return game actions functions to be used in the components
-  const setGameActions = () => ({setNumberOfCards, resetGame, resetCardsDom, setGameHistory, setMoves, setSelectedCards, setRemovedCards, setPlayingState, setCards, setCardsDOM, onSelectCard })
+  const setGameActions = () => ({setNumberOfCards, resetGame, setGameDifficulty, resetCardsDom, setGameHistory, setMoves, setSelectedCards, setRemovedCards, setPlayingState, setCards, setCardsDOM, onSelectCard })
 
   useEffect(() => {
     switch (gameState.state) {
@@ -61,7 +63,9 @@ export const GameProvider = ({children}: PropsWithChildren) => {
         const cards = createCardList(gameState.numberOfCards)
         shuffleCards(cards)
         setCards(cards)
-        setMoves(cards.length * 3)
+        // Set the amount of moves depending on the difficulty. easy, medium, hard
+        const movesFactor = gameState.difficulty === DifficultyEnum.EASY ? 3 : gameState.difficulty === DifficultyEnum.MEDIUM ? 2 : 1.5
+        setMoves(cards.length * movesFactor)
         break
       case GameStateEnum.GAME_OVER:
         // When the game is set to GAME_OVER state, we save the game history to local storage and reset cards and moves
