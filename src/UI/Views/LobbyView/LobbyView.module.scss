@@ -11,10 +11,17 @@
     font-weight: 900;
     color: #49aceb;
   }
+
   & .buttons_container{
     display: flex;
     gap: 1em;
     padding: 1em;
+  }
+
+  & form{
+      gap: 1em;
+      display: flex;
+      flex-direction: column;
   }
 
   & select{
