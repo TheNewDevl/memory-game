@@ -9,6 +9,7 @@ import {
 import {Card, GameHistory, GameState, GameStateActions, GameStateEnum} from "../types";
 import {createCardList, shuffleCards} from "../functions/cards";
 import {setLocalStorage} from "../functions/localStorage";
+import {flipSelectedCards, hideWinningCards, unFlipSelectedCards} from "../functions/classes";
 interface GameContextProps {
   gameState: GameState
   setGameActions: () => GameStateActions
@@ -30,11 +31,12 @@ export const GameProvider = ({children}: PropsWithChildren) => {
   // Game state
   const [gameState, setGameState] = useState(initialState)
   // Game actions
-  const resetGame = () => (setCards([]), resetCardsDom(), setRemovedCards([]), resetSelectedCards(), setMoves(0))
+  const resetGame = () => (setCards([]), resetCardsDom(), resetRemovedCards(), resetSelectedCards(), setMoves(0))
   const setGameHistory = (gameHistory: GameHistory) => setGameState(prev => ({...prev, gameHistory}))
   const setMoves = (moves: number) => setGameState(prev => ({...prev, moves}))
   const setSelectedCards = (target: HTMLButtonElement) => setGameState(prev => ({...prev, selectedCards: [...prev.selectedCards, target]}))
   const setRemovedCards = (el: HTMLButtonElement[]) => setGameState(prev => ({...prev, removedCards: [...prev.removedCards, ...el]}))
+  const resetRemovedCards = () => setGameState(prev => ({...prev, removedCards: []}))
   const setPlayingState = (gameState: GameStateEnum) => setGameState(prev => ({...prev, state: gameState}))
   const setCards = (cards: Card[]) => setGameState(prev => ({...prev, cards}))
   const setCardsDOM = (cardDOM: HTMLButtonElement) => setGameState(prev => ({...prev, cardsDOM: [...prev.cardsDOM, cardDOM]}))
@@ -75,21 +77,24 @@ export const GameProvider = ({children}: PropsWithChildren) => {
   }, [gameState.state])
 
   useEffect(() => {
-    gameState.selectedCards[0] && (gameState.selectedCards[0].querySelector('div')!.style.transform = 'rotateY(180deg)')
-    gameState.selectedCards[1] && (gameState.selectedCards[1].querySelector('div')!.style.transform = 'rotateY(180deg)')
-    if(gameState.selectedCards.length === 2){
+    const {selectedCards} = gameState
+    // Every time a card is selected, we flip it
+    flipSelectedCards(selectedCards)
+    // When 2 cards are selected, we check if color is the same
+    if(selectedCards.length === 2){
+      // Prevent the user from clicking too fast
       setTimeout(() => {
-        if(gameState?.selectedCards[0].dataset.color === gameState?.selectedCards[1].dataset.color){
-          setRemovedCards(gameState.selectedCards)
-            gameState.selectedCards.map(card => card.style.transition = 'transform 0.5s ease-in-out, opacity 0.5s ease-in-out')
-            gameState.selectedCards.map(card => card.style.transform = 'scale(0)')
-            gameState.selectedCards.map(card => card.style.opacity = '0')
+        if(selectedCards[0].dataset.color === selectedCards[1].dataset.color){
+          // If the color is the same, we hide the cards
+          setRemovedCards(selectedCards)
+          hideWinningCards(selectedCards)
         }
+        // If the color is not the same, we unflip the cards and reset the selected cards
         resetSelectedCards()
-        gameState.selectedCards.map(card => card.querySelector('div')!.style.transform = 'unset')
-      }, 1000)
+        unFlipSelectedCards(selectedCards)
+      }, 800)
     }
-  }, [gameState.selectedCards])
+    }, [gameState.selectedCards])
 
   useEffect(() => {
     if(gameState.state === GameStateEnum.PLAY && gameState.moves === 0) setPlayingState(GameStateEnum.GAME_OVER)
