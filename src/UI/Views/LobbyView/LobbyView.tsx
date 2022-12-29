@@ -54,7 +54,8 @@ export const LobbyView = ({}: LobbyProps) => {
         </label>
       </form>
       <div className={style.buttons_container}>
-        <Button text={'Jouer'} onClick={()=>setPlayingState(GameStateEnum.PLAY)}/>
+        <Button text={'1 player'} onClick={()=>setPlayingState(GameStateEnum.PLAY)}/>
+        <Button disabled text={'1 vs IA'} onClick={()=>{}}/>
         <Button text={'Reset Stats'} onClick={resetGameHistory}/>
       </div>
       <div className={style.buttons_container}>
