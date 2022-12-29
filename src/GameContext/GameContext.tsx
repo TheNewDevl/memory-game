@@ -24,7 +24,8 @@ const initialState: GameState = {
   cardsDOM: [],
   selectedCards: [],
   removedCards: [],
-  gameHistory: {victories: 0, defeats: 0}
+  gameHistory: {victories: 0, defeats: 0},
+  numberOfCards:30
 }
 
 export const GameProvider = ({children}: PropsWithChildren) => {
@@ -49,14 +50,15 @@ export const GameProvider = ({children}: PropsWithChildren) => {
       setMoves(gameState.moves - 1)
     }
   }
+  const setNumberOfCards = (numberOfCards: number) => setGameState(prev => ({...prev, numberOfCards}))
   // Return game actions functions to be used in the components
-  const setGameActions = () => ({resetGame, resetCardsDom, setGameHistory, setMoves, setSelectedCards, setRemovedCards, setPlayingState, setCards, setCardsDOM, onSelectCard })
+  const setGameActions = () => ({setNumberOfCards, resetGame, resetCardsDom, setGameHistory, setMoves, setSelectedCards, setRemovedCards, setPlayingState, setCards, setCardsDOM, onSelectCard })
 
   useEffect(() => {
     switch (gameState.state) {
       case GameStateEnum.PLAY:
         //When the game is set to PLAY state, we create the cards list, shuffle them and set the amount of moves
-        const cards = createCardList(4)
+        const cards = createCardList(gameState.numberOfCards)
         shuffleCards(cards)
         setCards(cards)
         setMoves(cards.length * 3)

@@ -1,7 +1,5 @@
 .Card {
   background-color: transparent;
-  width: calc((100% - (3% * 3)) / 4);
-  height: calc((100% - (5% * 2)) / 3);
   perspective: 1000px;
   cursor: pointer;
   border: none;

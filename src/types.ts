@@ -24,7 +24,8 @@ export interface GameState {
   cardsDOM: HTMLButtonElement[],
   selectedCards: HTMLButtonElement[],
   removedCards:HTMLButtonElement[],
-  gameHistory: GameHistory
+  gameHistory: GameHistory,
+  numberOfCards: number,
 }
 
 export interface GameStateActions {
@@ -38,4 +39,5 @@ export interface GameStateActions {
   setCards: (cards: Card[]) => void,
   resetCardsDom: () => void,
   setMoves: (moves: number) => void
+  setNumberOfCards: (numberOfCards: number) => void
 }

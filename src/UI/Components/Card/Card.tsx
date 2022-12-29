@@ -1,6 +1,7 @@
 import style from './Card.module.scss'
-import { useEffect, useRef} from "react";
+import {useEffect, useRef} from "react";
 import {useGameContext} from "../../../GameContext/GameContext";
+import {calculateCardHeight, calculateCardWidth} from "../../../functions/cards";
 
 interface CardProps {
   color: string,
@@ -10,10 +11,20 @@ export const Card = ({color}: CardProps) => {
   const cardRef = useRef<HTMLButtonElement>(null)
   const {gameState, setGameActions} = useGameContext()
   const {onSelectCard, setCardsDOM, resetCardsDom} = setGameActions()
-  const {selectedCards, removedCards} = gameState
+  const {selectedCards, removedCards, numberOfCards} = gameState
+
+  const setCardSize = () => {
+    const colsNumber = Math.ceil(Math.sqrt(numberOfCards))
+    const rowsNumber = Math.ceil(numberOfCards / colsNumber)
+    if(cardRef.current) {
+      cardRef.current.style.width = `${calculateCardWidth(3, colsNumber)}%`
+      cardRef.current.style.height = `${calculateCardHeight(5, rowsNumber)}%`
+    }
+  }
 
   useEffect(() => {
     setCardsDOM(cardRef.current!)
+    setCardSize()
     return () => resetCardsDom()
   }, [])
 

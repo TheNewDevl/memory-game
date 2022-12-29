@@ -26,3 +26,11 @@ export const shuffleCards = (cards: Card[]): void => {
     [cards[i], cards[j]] = [cards[j], cards[i]]
   }
 }
+
+export const calculateCardWidth = (gap: number, colNumbers: number) => {
+  return  (100 - (gap * (colNumbers - 1))) / colNumbers
+}
+
+export const calculateCardHeight = (gap: number, rowNumbers: number) => {
+  return  (100 - (gap * (rowNumbers - 1))) / rowNumbers
+}
